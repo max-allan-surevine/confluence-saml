@@ -17,6 +17,7 @@
   --
   --%>
 <%@ page import="com.lastpass.confluence.SAMLAuthenticator" %>
+<% String context = request.getContextPath(); %>
 <%
     // This page is accessed to initiate SAML login when getUser() in the
     // authenticator returns null and there is no SAMLResponse being processed.
@@ -24,7 +25,7 @@
     //
     // We generate an authnrequest and then redirect to the IdP.
     try {
-        String url = new SAMLAuthenticator().getRedirectUrl(request.getParameter("os_destination"));
+        String url = new SAMLAuthenticator().getRedirectUrl(context + request.getParameter("os_destination"));
         response.sendRedirect(response.encodeRedirectURL(url));
     } catch (Throwable t) {
         out.println("Could not initialize Confluence SAML plugin: " + t);
