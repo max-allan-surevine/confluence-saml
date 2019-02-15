@@ -199,16 +199,17 @@ public class SAMLAuthenticator extends ConfluenceGroupJoiningAuthenticator
                 logger.error("Unable to create new user: " + username);
                 return null;
             }
-
-            try {
-                Group group = userAccessor.getGroup(UserAccessor.GROUP_CONFLUENCE_USERS);
-                if (group != null) {
-                    GroupManager groupManager = (GroupManager)
-                        ContainerManager.getComponent("groupManager");
-                    groupManager.addMembership(group, user);
+            if (! email.endsWith('@surevine.com') ) {
+                try {
+                    Group group = userAccessor.getGroup(UserAccessor.GROUP_CONFLUENCE_USERS);
+                    if (group != null) {
+                        GroupManager groupManager = (GroupManager)
+                            ContainerManager.getComponent("groupManager");
+                        groupManager.addMembership(group, user);
+                    }
+                } catch (EntityException e) {
+                    logger.error("Unable to add new user to group, continuing...");
                 }
-            } catch (EntityException e) {
-                logger.error("Unable to add new user to group, continuing...");
             }
         }
 
